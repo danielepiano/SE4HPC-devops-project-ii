@@ -34,7 +34,7 @@ jobs:
 
       - name: Test | Run Unit-Tests
         id: unit-tests
-        run: ctest --test-dir build --output-on-failure --output-log test.log
+        run: ctest --test-dir build --output-on-failure --output-log test-report.txt
       - name: Test | Upload test report
         id: unit-tests-report-upload
         uses: actions/upload-artifact@v4
