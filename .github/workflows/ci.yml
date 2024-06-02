@@ -16,37 +16,37 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup MPI
+      - name: Setup | MPI
         id: mpi-setup
         uses: mpi4py/setup-mpi@v1
         with:
           mpi: 'openmpi'
 
-      - name: Setup CMake
+      - name: Setup | CMake
         id: cmake-setup
         uses: jwlawson/actions-setup-cmake@v2
       - name: Configure CMake
         id: cmake-configuration
         run: cmake -S . -B build
 
-      - name: Build
+      - name: Build | Executables
         id: build
         run: cmake --build build
 
-      - name: Run Tests
+      - name: Test | Run Unit-Tests
         id: unit-tests
         run: ctest --test-dir build --output-on-failure --output-log test.log
 
-      - name: Setup Cppcheck
+      - name: Setup | Cppcheck
         id: cppcheck-setup
         run: sudo apt-get install cppcheck
-      - name: Verify Cppcheck
+      - name: Setup | Verify Cppcheck
         id: cppcheck-verify
         run: cppcheck --version
-      - name: S.C.A. - Cppcheck
+      - name: SCA | Cppcheck
         id: sca-cppcheck
         run: cppcheck --enable=all --inconclusive --std=c++17 src --output-file=sca-report.txt
-      - name: S.C.A. - Cppcheck report
+      - name: SCA | Cppcheck report
         id: sca-cppcheck-upload
         uses: actions/upload-artifact@v4
         with:
@@ -55,7 +55,7 @@ jobs:
           if-no-files-found: error
           retention-days: 10
 
-      - name: Setup Singularity dependencies
+      - name: Setup | Singularity dependencies
         id: singularity-dep-setup
         run: |
           sudo apt-get update && sudo apt-get install -y \
@@ -74,7 +74,7 @@ jobs:
             uidmap \
             wget \
             zlib1g-dev
-      - name: Setup Go
+      - name: Setup | Go
         id: go-setup
         run: |
           export GO_VERSION=1.22.3 GO_OS=linux GO_ARCH=amd64
@@ -83,10 +83,10 @@ jobs:
           rm go$GO_VERSION.$GO_OS-$GO_ARCH.tar.gz
           echo 'export PATH=$PATH:/usr/local/go/bin' >> $GITHUB_ENV
           echo 'PATH=$PATH:/usr/local/go/bin' >> $GITHUB_PATH
-      - name: Verify Go
+      - name: Setup | Verify Go
         id: go-verify
         run: go version
-      - name: Setup Singularity
+      - name: Setup | Singularity
         id: singularity-setup
         run: |
           export SINGULARITY_VERSION=4.1.3
@@ -96,14 +96,14 @@ jobs:
           ./mconfig
           make -C builddir
           sudo make -C builddir install
-      - name: Verify Singularity
+      - name: Setup | Verify Singularity
         id: singularity-verify
         run: singularity --version
 
-      - name: Build Singularity image
+      - name: Build | Singularity image
         id: singularity-build
         run: sudo -E singularity build mx-multiplication.sif SingularityFile.def
-      - name: Upload Singularity image
+      - name: Build | Upload Singularity image
         id: singularity-image-upload
         uses: actions/upload-artifact@v4
         with:
