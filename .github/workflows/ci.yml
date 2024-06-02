@@ -97,9 +97,9 @@ jobs:
 #      - name: Verify Singularity installation
 #        id: singularity-verify
 #        run: singularity --version
-#      - name: Build Singularity image
-#        id: singularity-build
-#        run: sudo -E singularity build test_multiplication.sif SingularityFile.def
+      - name: Build Singularity image
+        id: singularity-build
+        run: sudo -E singularity build test_multiplication.sif SingularityFile.def
 
   sca:
     needs:
