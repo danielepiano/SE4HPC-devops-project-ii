@@ -35,6 +35,14 @@ jobs:
       - name: Test | Run Unit-Tests
         id: unit-tests
         run: ctest --test-dir build --output-on-failure --output-log test.log
+      - name: Test | Upload test report
+        id: unit-tests-report-upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report.txt
+          path: test-report.txt
+          if-no-files-found: error
+          retention-days: 10
 
       - name: Setup | Cppcheck
         id: cppcheck-setup
@@ -45,7 +53,7 @@ jobs:
       - name: SCA | Cppcheck
         id: sca-cppcheck
         run: cppcheck --enable=all --inconclusive --std=c++17 src --output-file=sca-report.txt
-      - name: SCA | Cppcheck report
+      - name: SCA | Upload Cppcheck report
         id: sca-cppcheck-upload
         uses: actions/upload-artifact@v4
         with:
