@@ -45,7 +45,15 @@ jobs:
         run: cppcheck --version
       - name: S.C.A. - Cppcheck
         id: sca-cppcheck
-        run: cppcheck --enable=all --inconclusive --std=c++17 src
+        run: cppcheck --enable=all --inconclusive --std=c++17 src --output-file=sca-report.txt
+      - name: S.C.A. - Cppcheck report
+        id: sca-cppcheck-upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: sca-report
+          path: sca-report.txt
+          if-no-files-found: error
+          retention-days: 10
 
       - name: Setup Singularity dependencies
         id: singularity-dep-setup
