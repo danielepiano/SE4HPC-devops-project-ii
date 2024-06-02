@@ -43,17 +43,47 @@ jobs:
       #  id: unit-tests
       #  run: ctest --test-dir build --output-on-failure --output-log test.log
 
-      - name: Setup Singularity
-        id: singularity-setup
-        uses: eWaterCycle/setup-singularity@v7
-        with:
-          singularity-version: 3.8.3
-      - name: Verify Singularity installation
-        id: singularity-verify
-        run: singularity --version
-      - name: Build Singularity image
-        id: singularity-build
-        run: sudo -E singularity build test_multiplication.sif SingularityFile.def
+      - name: Setup Singularity dependencies
+        id: singularity-dep-setup
+        run: |
+          sudo apt-get update && sudo apt-get install -y \
+            autoconf \
+            automake \
+            cryptsetup \
+            git \
+            libfuse-dev \
+            libglib2.0-dev \
+            libseccomp-dev \
+            libtool \
+            pkg-config \
+            runc \
+            squashfs-tools \
+            squashfs-tools-ng \
+            uidmap \
+            wget \
+            zlib1g-dev
+      - name: Setup Go
+        id: go-setup
+        run: |
+          export GO_VERSION=1.22.3 GO_OS=linux GO_ARCH=amd64
+          wget https://go.dev/dl/go$GO_VERSION.$GO_OS-$GO_ARCH.tar.gz
+          sudo tar -C /usr/local -xzvf go$GO_VERSION.$GO_OS-$GO_ARCH.tar.gz
+          rm go$GO_VERSION.$GO_OS-$GO_ARCH.tar.gz
+          echo 'export PATH=$PATH:/usr/local/go/bin' >> $GITHUB_ENV
+          echo 'PATH=$PATH:/usr/local/go/bin' >> $GITHUB_PATH
+          go version
+
+#      - name: Setup Singularity
+#        id: singularity-setup
+#        uses: eWaterCycle/setup-singularity@v7
+#        with:
+#          singularity-version: 3.8.3
+#      - name: Verify Singularity installation
+#        id: singularity-verify
+#        run: singularity --version
+#      - name: Build Singularity image
+#        id: singularity-build
+#        run: sudo -E singularity build test_multiplication.sif SingularityFile.def
 
   sca:
     needs:
