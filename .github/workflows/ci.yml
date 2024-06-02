@@ -34,3 +34,15 @@ jobs:
       - name: Run Tests
         id: unit-tests
         run: ctest --test-dir build --output-on-failure --output-log test.log
+
+  sca:
+    needs:
+      - build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup cppcheck
+        run: sudo apt-get install cppcheck
+      - name: Run cppcheck
+        run: cppcheck --enable=all --inconclusive --std=c++17 src
