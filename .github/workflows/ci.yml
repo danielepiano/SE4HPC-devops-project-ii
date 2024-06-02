@@ -25,12 +25,11 @@ jobs:
       - name: Setup | CMake
         id: cmake-setup
         uses: jwlawson/actions-setup-cmake@v2
-      - name: Configure CMake
+      - name: Build | Configure CMake
         id: cmake-configuration
         run: cmake -S . -B build
-
       - name: Build | Executables
-        id: build
+        id: cmake-build
         run: cmake --build build
 
       - name: Test | Run Unit-Tests
@@ -108,6 +107,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mx-multiplication.sif
-          path: mx-multiplication.sif
+          path: mx-multiplication.sif\
           if-no-files-found: error
           retention-days: 10
