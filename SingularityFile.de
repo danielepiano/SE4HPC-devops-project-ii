@@ -6,11 +6,11 @@ From: mfisherman/openmpi
 
 %post
     # Prepare folders to be used
-    mkdir -p /input /bin
+    mkdir -p ./input ./bin
 
 %files
     # Copy executable in /bin directory
-    /build/test_multiplication /bin
+    ./build/main ./bin
 
     # Copy matrix samples to run the executable with
     matrixA.txt matrixB.txt /input

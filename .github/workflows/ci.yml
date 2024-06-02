@@ -99,7 +99,7 @@ jobs:
 #        run: singularity --version
       - name: Build Singularity image
         id: singularity-build
-        run: sudo -E singularity build test_multiplication.sif SingularityFile.def
+        run: sudo -E singularity build mx-multiplication.sif SingularityFile.de
 
   sca:
     needs:
@@ -123,6 +123,6 @@ jobs:
           #with:
         #singularity-version: 3.8.3
         #- name: Build Singularity image
-        #run: sudo singularity build test_multiplication.sif SingularityFile.def
+        #run: sudo singularity build test_multiplication.sif SingularityFile.de
       #- name: Run a singularity container
       #  run: singularity run docker://alpine cat /etc/os-release
