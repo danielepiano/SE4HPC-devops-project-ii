@@ -142,16 +142,16 @@ jobs:
         id: singularity-image-deploy
         env:
           CINECA_SECRET: ${{ secrets.CINECA_SECRET }}
-        run: sshpass -p ${{ CINECA_SECRET }} scp mx-multiplication.sif a08trb53@login.g100.cineca.it:~
+        run: sshpass -p "${{ CINECA_SECRET }}" scp mx-multiplication.sif a08trb53@login.g100.cineca.it:~
 
       - name: Deploy | Slurm job descriptor
         id: sbatch-job-deploy
         env:
           CINECA_SECRET: ${{ secrets.CINECA_SECRET }}
-        run: sshpass -p ${{ CINECA_SECRET }} scp job.sh a08trb53@login.g100.cineca.it:~
+        run: sshpass -p "${{ CINECA_SECRET }}" scp job.sh a08trb53@login.g100.cineca.it:~
 
       - name: Deploy | Enqueue job via Slurm
         id: sbatch-job
         env:
           CINECA_SECRET: ${{ secrets.CINECA_SECRET }}
-        run: sshpass -p ${{ CINECA_SECRET }} scp job.sh a08trb53@login.g100.cineca.it sbatch.job
+        run: sshpass -p "${{ CINECA_SECRET }}" scp job.sh a08trb53@login.g100.cineca.it sbatch.job
