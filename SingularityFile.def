@@ -28,6 +28,7 @@ From: mfisherman/openmpi
         echo "All required files are present."
     else
         echo "Error: One or more required files are missing."
+    fi
 
 %help
     This is a container hosting a mini-app to perform matrix multiplication, exploiting parallelism via MPI.
