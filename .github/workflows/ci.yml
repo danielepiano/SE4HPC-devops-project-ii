@@ -39,9 +39,19 @@ jobs:
         id: build
         run: cmake --build build
 
-      #- name: Run Tests
-      #  id: unit-tests
-      #  run: ctest --test-dir build --output-on-failure --output-log test.log
+      - name: Run Tests
+        id: unit-tests
+        run: ctest --test-dir build --output-on-failure --output-log test.log
+
+      - name: Setup Cppcheck
+        id: cppcheck-setup
+        run: sudo apt-get install cppcheck
+      - name: Verify Cppcheck
+        id: cppcheck-verify
+        run: cppcheck --version
+      - name: S.C.A. :: Cppcheck
+        id: sca-cppcheck
+        run: cppcheck --enable=all --inconclusive --std=c++17 src
 
       - name: Setup Singularity dependencies
         id: singularity-dep-setup
@@ -74,7 +84,6 @@ jobs:
       - name: Verify Go
         id: go-verify
         run: go version
-
       - name: Setup Singularity
         id: singularity-setup
         run: |
@@ -89,40 +98,14 @@ jobs:
         id: singularity-verify
         run: singularity --version
 
-#      - name: Setup Singularity
-#        id: singularity-setup
-#        uses: eWaterCycle/setup-singularity@v7
-#        with:
-#          singularity-version: 3.8.3
-#      - name: Verify Singularity installation
-#        id: singularity-verify
-#        run: singularity --version
       - name: Build Singularity image
         id: singularity-build
         run: sudo -E singularity build mx-multiplication.sif SingularityFile.def
-
-  sca:
-    needs:
-      - build-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup cppcheck
-        run: sudo apt-get install cppcheck
-      - name: Run cppcheck
-        run: cppcheck --enable=all --inconclusive --std=c++17 src
-
-  #package:
-    #needs:
-    #  - sca
-    #runs-on: ubuntu-latest
-    #steps:
-    #  - name: Setup Singularity
-        #    uses: eWaterCycle/setup-singularity@v7
-          #with:
-        #singularity-version: 3.8.3
-        #- name: Build Singularity image
-        #run: sudo singularity build test_multiplication.sif SingularityFile.def
-      #- name: Run a singularity container
-      #  run: singularity run docker://alpine cat /etc/os-release
+      - name: Upload Singularity image
+        id: singularity-image-upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: mx-multiplication.sif
+          path: mx-multiplication.sif
+          if-no-files-found: error
+          retention-days: 10
