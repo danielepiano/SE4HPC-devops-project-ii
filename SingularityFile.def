@@ -17,18 +17,22 @@ From: mfisherman/openmpi
     matrixB.txt /input/matrixB.txt
 
 %runscript
-    echo "Container started. . ."
-    # echo $HOME
-    # echo /bin/$EXEC_FILENAME
-    # /bin/$EXEC_FILENAME
+    echo ">> Container started. . ."
+    ./bin/matrix-multiplication
 
 %test
-    # Check if the required files exist
-    if [[ -f /bin/matrix-multiplication && -f /input/matrixA.txt && -f /input/matrixB.txt ]]; then
-        echo "All required files are present."
-    else
-        echo "Error: One or more required files are missing."
+    # Check if required files exist
+    echo ">> Verifying required files exist..."
+    if [[ ! -f /bin/matrix-multiplication ]]; then
+        echo ">> !! Missing: /bin/matrix-multiplication"
     fi
+    if [[ ! -f /input/matrixA.txt ]]; then
+        echo ">> !! Missing: /input/matrixA.txt"
+    fi
+    if [[ ! -f /input/matrixB.txt ]]; then
+        echo ">> !! Missing: /input/matrixB.txt"
+    fi
+    echo ">> Check completed."
 
 %help
     This is a container hosting a mini-app to perform matrix multiplication, exploiting parallelism via MPI.
