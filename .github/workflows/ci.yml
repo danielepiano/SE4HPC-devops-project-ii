@@ -21,9 +21,6 @@ jobs:
         uses: mpi4py/setup-mpi@v1
         with:
           mpi: 'openmpi'
-      - name: Verify MPI
-        id: mpi-verify
-        run: ompi_info
 
       - name: Setup CMake
         id: cmake-setup
