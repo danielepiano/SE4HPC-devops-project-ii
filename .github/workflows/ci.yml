@@ -49,7 +49,7 @@ jobs:
       - name: Verify Cppcheck
         id: cppcheck-verify
         run: cppcheck --version
-      - name: S.C.A. :: Cppcheck
+      - name: S.C.A. - Cppcheck
         id: sca-cppcheck
         run: cppcheck --enable=all --inconclusive --std=c++17 src
 
