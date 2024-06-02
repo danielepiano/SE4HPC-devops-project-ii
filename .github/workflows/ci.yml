@@ -71,7 +71,9 @@ jobs:
           rm go$GO_VERSION.$GO_OS-$GO_ARCH.tar.gz
           echo 'export PATH=$PATH:/usr/local/go/bin' >> $GITHUB_ENV
           echo 'PATH=$PATH:/usr/local/go/bin' >> $GITHUB_PATH
-          go version
+      - name: Verify Go
+        id: go-verify
+        run: go version
 
 #      - name: Setup Singularity
 #        id: singularity-setup
