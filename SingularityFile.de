@@ -13,7 +13,8 @@ From: mfisherman/openmpi
     ./build/main ./bin
 
     # Copy matrix samples to run the executable with
-    matrixA.txt matrixB.txt /input
+    matrixA.txt /input
+    matrixB.txt /input
 
 %runscript
     echo "Container started. . ."
