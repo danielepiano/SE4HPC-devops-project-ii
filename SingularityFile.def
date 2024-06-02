@@ -1,0 +1,33 @@
+Bootstrap: docker
+From: mfisherman/openmpi
+
+%labels
+    Author danielepiano
+
+%post
+    # Prepare folders to be used
+    mkdir -p /input /bin
+
+%files
+    # Copy executable in /bin directory
+    /build/test_multiplication /bin
+
+    # Copy matrix samples to run the executable with
+    matrixA.txt matrixB.txt /input
+
+%runscript
+    echo "Container started. . ."
+    # echo $HOME
+    # echo /bin/$EXEC_FILENAME
+    # /bin/$EXEC_FILENAME
+
+%test
+    # Check if the required files exist
+    if [[ -f /bin/test_multiplication && -f /input/matrixA.txt && -f /input/matrixB.txt ]]; then
+        echo "All required files are present."
+    else
+        echo "Error: One or more required files are missing."
+
+%help
+    This is a container hosting a mini-app to perform matrix multiplication, exploiting parallelism via MPI.
+    The status quo is: the two matrices are hardcoded, only 2 processes may run concurrently.
