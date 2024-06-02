@@ -19,10 +19,16 @@ jobs:
       - name: Setup MPI
         id: mpi-setup
         uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: ['openmpi']
+      - name: Verify MPI
+        run: ompi_info
 
       - name: Setup CMake
         id: cmake-setup
         uses: jwlawson/actions-setup-cmake@v2
+      - name: Verify Cmake installation
+        run: cmake --version
       - name: Configure CMake
         id: cmake-configuration
         run: cmake -S . -B build
@@ -39,6 +45,8 @@ jobs:
         uses: eWaterCycle/setup-singularity@v7
         with:
           singularity-version: 3.8.3
+      - name: Verify Singularity installation
+        run: singularity --version
       - name: Build Singularity image
         run: sudo singularity build test_multiplication.sif SingularityFile.def
 
