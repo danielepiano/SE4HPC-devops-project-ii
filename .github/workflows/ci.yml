@@ -25,9 +25,6 @@ jobs:
       - name: Setup CMake
         id: cmake-setup
         uses: jwlawson/actions-setup-cmake@v2
-      - name: Verify Cmake
-        id: cmake-verify
-        run: cmake --version
       - name: Configure CMake
         id: cmake-configuration
         run: cmake -S . -B build
