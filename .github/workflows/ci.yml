@@ -22,12 +22,14 @@ jobs:
         with:
           mpi: 'openmpi'
       - name: Verify MPI
+        id: mpi-verify
         run: ompi_info
 
       - name: Setup CMake
         id: cmake-setup
         uses: jwlawson/actions-setup-cmake@v2
-      - name: Verify Cmake installation
+      - name: Verify Cmake
+        id: cmake-verify
         run: cmake --version
       - name: Configure CMake
         id: cmake-configuration
@@ -42,13 +44,16 @@ jobs:
       #  run: ctest --test-dir build --output-on-failure --output-log test.log
 
       - name: Setup Singularity
+        id: singularity-setup
         uses: eWaterCycle/setup-singularity@v7
         with:
           singularity-version: 3.8.3
       - name: Verify Singularity installation
+        id: singularity-verify
         run: singularity --version
       - name: Build Singularity image
-        run: sudo singularity build test_multiplication.sif SingularityFile.def
+        id: singularity-build
+        run: singularity build test_multiplication.sif SingularityFile.def
 
   sca:
     needs:
