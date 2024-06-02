@@ -24,7 +24,7 @@ From: mfisherman/openmpi
 
 %test
     # Check if the required files exist
-    if [[ -f /bin/test_multiplication && -f /input/matrixA.txt && -f /input/matrixB.txt ]]; then
+    if [[ -f /bin/matrix-multiplication && -f /input/matrixA.txt && -f /input/matrixB.txt ]]; then
         echo "All required files are present."
     else
         echo "Error: One or more required files are missing."
