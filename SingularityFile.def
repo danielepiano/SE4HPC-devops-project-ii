@@ -10,7 +10,7 @@ From: mfisherman/openmpi
 
 %files
     # Copy executable in /bin directory
-    ./build/main ./bin/matrix-multiplication
+    ./build/main ./bin/mx-multiplication
 
     # Copy matrix samples to run the executable with
     matrixA.txt /input/matrixA.txt
@@ -18,13 +18,13 @@ From: mfisherman/openmpi
 
 %runscript
     echo ">> Container started. . ."
-    ./bin/matrix-multiplication
+    ./bin/mx-multiplication
 
 %test
     # Check if required files exist
     echo ">> Verifying required files exist..."
-    if [[ ! -f /bin/matrix-multiplication ]]; then
-        echo ">> !! Missing: /bin/matrix-multiplication"
+    if [[ ! -f /bin/mx-multiplication ]]; then
+        echo ">> !! Missing: /bin/mx-multiplication"
     fi
     if [[ ! -f /input/matrixA.txt ]]; then
         echo ">> !! Missing: /input/matrixA.txt"
