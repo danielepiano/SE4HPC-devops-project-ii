@@ -20,7 +20,7 @@ jobs:
         id: mpi-setup
         uses: mpi4py/setup-mpi@v1
         with:
-          mpi: ['openmpi']
+          mpi: 'openmpi'
       - name: Verify MPI
         run: ompi_info
 
