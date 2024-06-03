@@ -9,4 +9,4 @@
 #SBATCH --mem-per-cpu=100M
 
 #module load singularity
-/usr/mpi/gcc/openmpi-4.0.4rc3/bin/mpirun -np 1 singularity run mx-multiplication.sif /bin/mx-multiplication
+srun singularity exec mx-multiplication.sif /bin/mx-multiplication
