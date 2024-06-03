@@ -10,15 +10,15 @@ From: mfisherman/openmpi
 
 %files
     # Copy executable in /bin directory
-    ./build/main /bin/mx-multiplication
+    ./build/main $HOME/bin/mx-multiplication
 
     # Copy matrix samples to run the executable with
-    matrixA.txt /input/matrixA.txt
-    matrixB.txt /input/matrixB.txt
+    matrixA.txt $HOME/input/matrixA.txt
+    matrixB.txt $HOME/input/matrixB.txt
 
 %runscript
     echo ">> Container started..."
-    mpirun -np 1 /bin/mx-multiplication
+    mpirun -np 2 $HOME/bin/mx-multiplication
 
 %test
     # Check if required files exist
