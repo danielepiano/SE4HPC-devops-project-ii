@@ -137,7 +137,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: mx-multiplication.sif
-          path: mx-multiplication.sif
       - name: Deploy | Singularity image
         id: singularity-image-deploy
         run: |
