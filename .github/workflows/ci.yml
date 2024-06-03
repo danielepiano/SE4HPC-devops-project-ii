@@ -31,6 +31,14 @@ jobs:
       - name: Build | Executables
         id: cmake-build
         run: cmake --build build
+      - name: Build | Upload executable
+        id: build-upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: main
+          path: main
+          if-no-files-found: error
+          retention-days: 10
 
       - name: Test | Run Unit-Tests
         id: unit-tests
