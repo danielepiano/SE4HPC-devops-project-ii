@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #SBATCH --job-name=mx-multiplication
-#SBATCH --output=mx-multiplication.out
-#SBATCH --error=mx-multiplication.err
+#SBATCH --output=output.txt
+#SBATCH --error=error.txt
 #SBATCH --time=00:10
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
