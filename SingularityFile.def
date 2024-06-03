@@ -4,33 +4,28 @@ From: mfisherman/openmpi
 %labels
     Author danielepiano
 
-%post
-    # Prepare folders to be used
-    mkdir -p $HOME/input $HOME/bin
-
 %files
-    # Copy executable in /bin directory
-    ./build/main $HOME/bin/mx-multiplication
+    ./build/main mx-multiplication
 
     # Copy matrix samples to run the executable with
-    matrixA.txt $HOME/input/matrixA.txt
-    matrixB.txt $HOME/input/matrixB.txt
+    matrixA.txt
+    matrixB.txt
 
 %runscript
     echo ">> Container started..."
-    mpirun -np 2 $HOME/bin/mx-multiplication
+    mpirun -np 2 mx-multiplication
 
 %test
     # Check if required files exist
     echo ">> Verifying required files exist..."
-    if [[ ! -x /bin/mx-multiplication ]]; then
-        echo ">> !! Missing: /bin/mx-multiplication"
+    if [[ ! -x mx-multiplication ]]; then
+        echo ">> !! Missing: mx-multiplication"
     fi
-    if [[ ! -f /input/matrixA.txt ]]; then
-        echo ">> !! Missing: /input/matrixA.txt"
+    if [[ ! -f matrixA.txt ]]; then
+        echo ">> !! Missing: matrixA.txt"
     fi
-    if [[ ! -f /input/matrixB.txt ]]; then
-        echo ">> !! Missing: /input/matrixB.txt"
+    if [[ ! -f matrixB.txt ]]; then
+        echo ">> !! Missing: matrixB.txt"
     fi
     echo ">> Check completed."
 
