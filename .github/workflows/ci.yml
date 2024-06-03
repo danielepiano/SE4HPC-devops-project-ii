@@ -35,7 +35,7 @@ jobs:
         id: build-upload
         uses: actions/upload-artifact@v4
         with:
-          name: main
+          name: build/main
           path: main
           if-no-files-found: error
           retention-days: 10
