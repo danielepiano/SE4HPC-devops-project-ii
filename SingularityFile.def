@@ -18,7 +18,7 @@ From: mfisherman/openmpi
 
 %runscript
     echo ">> Container started. . ."
-    ./bin/mx-multiplication
+    mpiexec -np 2 ./bin/mx-multiplication
 
 %test
     # Check if required files exist
