@@ -9,4 +9,4 @@
 #SBATCH --mem-per-cpu=100M
 
 module load singularity
-mpirun -n 2 singularity exec mx-multiplication.sif /bin/mx-multiplication
+mpiexec -np 2 singularity run mx-multiplication.sif /bin/mx-multiplication

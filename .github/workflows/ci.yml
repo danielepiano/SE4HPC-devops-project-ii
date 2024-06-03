@@ -153,7 +153,7 @@ jobs:
           ssh-keygen -R "login.g100.cineca.it"
           sshpass -p '${{ secrets.CINECA_SECRET }}' ssh -o PreferredAuthentications=password -o StrictHostKeyChecking=no a08trb53@login.g100.cineca.it 'sbatch job.sh'
 
-      - name: Notification | Telegram from se4hpc_ci_bot
+      - name: Notification | Telegram by se4hpc_ci_bot
         if: always()
         uses: appleboy/telegram-action@master
         with:

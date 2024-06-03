@@ -1,5 +1,6 @@
-Bootstrap: docker
-From: mfisherman/openmpi
+Bootstrap: library
+From: ubuntu:22.04
+Stage: build
 
 %labels
     Author danielepiano
