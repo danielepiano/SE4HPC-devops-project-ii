@@ -40,7 +40,8 @@ From: ubuntu:latest
 
 %runscript
     echo ">> Container started..."
-    mpirun -np 2 ./main
+    cd /
+    mpirun -np 2 /main
 
 
 %test

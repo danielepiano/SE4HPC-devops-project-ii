@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
                 std::cout << elem << " ";
             }
             std::cout << std::endl;
-        }
+        }ca
     }
 
     MPI_Finalize();
