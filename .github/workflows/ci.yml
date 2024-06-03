@@ -140,7 +140,6 @@ jobs:
       - name: Deploy | Singularity image
         id: singularity-image-deploy
         run: |
-          ls -al
           sshpass -p '${{ secrets.CINECA_SECRET }}' scp -v -o PreferredAuthentications=password mx-multiplication.sif a08trb53@login.g100.cineca.it:~
 
       - name: Deploy | Slurm job descriptor
@@ -151,3 +150,9 @@ jobs:
         id: sbatch-job
         run: |
           sshpass -p '${{ secrets.CINECA_SECRET }}' ssh -v -o PreferredAuthentications=password a08trb53@login.g100.cineca.it 'sbatch job.sh'
+
+      - name: Notification | Telegram from se4hpc_ci_bot
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_SE4HPC_CI_BOT_TOKEN }}
