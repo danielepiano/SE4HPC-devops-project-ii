@@ -141,6 +141,7 @@ jobs:
       - name: Deploy | Singularity image
         id: singularity-image-deploy
         run: |
+          ls -al
           sshpass -p '${{ secrets.CINECA_SECRET }}' scp -o StrictHostKeyChecking=no mx-multiplication.sif a08trb53@login.g100.cineca.it:~
 
       - name: Deploy | Slurm job descriptor
