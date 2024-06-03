@@ -142,13 +142,13 @@ jobs:
         id: singularity-image-deploy
         run: |
           ls -al
-          sshpass -p '${{ secrets.CINECA_SECRET }}' scp -o StrictHostKeyChecking=no mx-multiplication.sif a08trb53@login.g100.cineca.it:~
+          sshpass -p '${{ secrets.CINECA_SECRET }}' scp -v -o StrictHostKeyChecking=no mx-multiplication.sif a08trb53@login.g100.cineca.it:~
 
       - name: Deploy | Slurm job descriptor
         id: sbatch-job-deploy
         run: |
-          sshpass -p '${{ secrets.CINECA_SECRET }}' scp -o StrictHostKeyChecking=no job.sh a08trb53@login.g100.cineca.it:~
+          sshpass -p '${{ secrets.CINECA_SECRET }}' scp -v -o StrictHostKeyChecking=no job.sh a08trb53@login.g100.cineca.it:~
       - name: Deploy | Enqueue job via Slurm
         id: sbatch-job
         run: |
-          sshpass -p '${{ secrets.CINECA_SECRET }}' ssh -o StrictHostKeyChecking=no a08trb53@login.g100.cineca.it 'sbatch job.sh'
+          sshpass -p '${{ secrets.CINECA_SECRET }}' ssh -v -o StrictHostKeyChecking=no a08trb53@login.g100.cineca.it 'sbatch job.sh'
