@@ -128,6 +128,16 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
+      - name:  Setup | SSH keys
+        id: ssh-setup
+        run: |
+          env
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 22 ${{ secrets.ARTIFACT_HOST }} >> ~/.ssh/known_hosts
+          sudo apt-get install sshpass
+
       - name: Setup | SSHPass
         id: sshpass-setup
         run: sudo apt-get install sshpass
@@ -140,18 +150,22 @@ jobs:
       - name: Deploy | Singularity image
         id: singularity-image-deploy
         run: |
-          sshpass -p '${{ secrets.CINECA_SECRET }}' scp -v -o PreferredAuthentications=password -o StrictHostKeyChecking=no mx-multiplication.sif a08trb53@login.g100.cineca.it:~
+          ssh-keygen -R "login.g100.cineca.it"
+          sshpass -p '${{ secrets.CINECA_SECRET }}' scp -o PreferredAuthentications=password -o StrictHostKeyChecking=no mx-multiplication.sif a08trb53@login.g100.cineca.it:~
 
       - name: Deploy | Slurm job descriptor
         id: sbatch-job-deploy
         run: |
-          sshpass -p '${{ secrets.CINECA_SECRET }}' scp -v -o PreferredAuthentications=password -o StrictHostKeyChecking=no job.sh a08trb53@login.g100.cineca.it:~
+          ssh-keygen -R "login.g100.cineca.it"
+          sshpass -p '${{ secrets.CINECA_SECRET }}' scp -o PreferredAuthentications=password -o StrictHostKeyChecking=no job.sh a08trb53@login.g100.cineca.it:~
       - name: Deploy | Enqueue job via Slurm
         id: sbatch-job
         run: |
-          sshpass -p '${{ secrets.CINECA_SECRET }}' ssh -v -o PreferredAuthentications=password -o StrictHostKeyChecking=no a08trb53@login.g100.cineca.it 'sbatch job.sh'
+          ssh-keygen -R "login.g100.cineca.it"
+          sshpass -p '${{ secrets.CINECA_SECRET }}' ssh -o PreferredAuthentications=password -o StrictHostKeyChecking=no a08trb53@login.g100.cineca.it 'sbatch job.sh'
 
       - name: Notification | Telegram from se4hpc_ci_bot
+        if: always()
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
