@@ -140,12 +140,12 @@ jobs:
           path: mx-multiplication.sif
       - name: Deploy | Singularity image
         id: singularity-image-deploy
-        run: sshpass -p ${{ secrets.CINECA_SECRET }} scp mx-multiplication.sif a08trb53@login.g100.cineca.it:~
+        run: |
+          sshpass -p ${{ secrets.CINECA_SECRET }} scp mx-multiplication.sif a08trb53@login.g100.cineca.it:~
 
       - name: Deploy | Slurm job descriptor
         id: sbatch-job-deploy
         run: sshpass -p ${{ secrets.CINECA_SECRET }} scp job.sh a08trb53@login.g100.cineca.it:~
-
       - name: Deploy | Enqueue job via Slurm
         id: sbatch-job
         run: sshpass -p ${{ secrets.CINECA_SECRET }} ssh a08trb53@login.g100.cineca.it 'sbatch job.sh'

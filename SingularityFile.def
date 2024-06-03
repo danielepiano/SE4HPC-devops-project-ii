@@ -6,19 +6,19 @@ From: mfisherman/openmpi
 
 %post
     # Prepare folders to be used
-    mkdir -p ./input ./bin
+    mkdir -p /input /bin
 
 %files
     # Copy executable in /bin directory
-    ./build/main ./bin/mx-multiplication
+    /build/main /bin/mx-multiplication
 
     # Copy matrix samples to run the executable with
     matrixA.txt /input/matrixA.txt
     matrixB.txt /input/matrixB.txt
 
 %runscript
-    echo ">> Container started. . ."
-    mpiexec -np 2 ./bin/mx-multiplication
+    echo ">> Container started..."
+    mpiexec -np 2 /bin/mx-multiplication
 
 %test
     # Check if required files exist
