@@ -6,7 +6,7 @@ From: mfisherman/openmpi
 
 %post
     # Prepare folders to be used
-    mkdir -p /input /bin
+    mkdir -p $HOME/input $HOME/bin
 
 %files
     # Copy executable in /bin directory
