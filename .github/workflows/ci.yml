@@ -128,16 +128,6 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      - name:  Setup | SSH keys
-        id: ssh-setup
-        run: |
-          env
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p 22 ${{ secrets.ARTIFACT_HOST }} >> ~/.ssh/known_hosts
-          sudo apt-get install sshpass
-
       - name: Setup | SSHPass
         id: sshpass-setup
         run: sudo apt-get install sshpass
