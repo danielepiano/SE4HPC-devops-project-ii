@@ -10,7 +10,7 @@ From: mfisherman/openmpi
 
 %files
     # Copy executable in /bin directory
-    /build/main /bin/mx-multiplication
+    ./build/main /bin/mx-multiplication
 
     # Copy matrix samples to run the executable with
     matrixA.txt /input/matrixA.txt
