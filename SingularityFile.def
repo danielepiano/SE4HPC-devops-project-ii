@@ -1,6 +1,5 @@
-Bootstrap: library
-From: ubuntu:22.04
-Stage: build
+Bootstrap: docker
+From: mfisherman/openmpi
 
 %labels
     Author danielepiano
@@ -19,7 +18,7 @@ Stage: build
 
 %runscript
     echo ">> Container started..."
-    /bin/mx-multiplication
+    mpirun -np 1 /bin/mx-multiplication
 
 %test
     # Check if required files exist
