@@ -1,18 +1,12 @@
 Bootstrap: docker
-From: ubuntu:latest
+From: mfisherman/openmpi
 
 %labels
     Author danielepiano
 
 
 %environment
-    export OMPI_DIR=/opt/ompi
-    export SINGULARITY_OMPI_DIR=$OMPI_DIR
-    export SINGULARITYENV_APPEND_PATH=$OMPI_DIR/bin
-    export SINGULAIRTYENV_APPEND_LD_LIBRARY_PATH=$OMPI_DIR/lib
-    export PATH=$SINGULARITYENV_APPEND_PATH:$PATH
-    export LD_LIBRARY_PATH=$SINGULAIRTYENV_APPEND_LD_LIBRARY_PATH:$LD_LIBRARY_PATH
-    export MANPATH=$OMPI_DIR/share/man:$MANPATH
+
 
 
 %files
@@ -23,18 +17,7 @@ From: ubuntu:latest
 
 
 %post
-    # Installing required packages...
-    apt-get update && apt-get install -y wget bzip2 git bash gcc gfortran g++ make file
 
-    export OMPI_DIR=/opt/ompi
-    export OMPI_VERSION=5.0.1
-    export OMPI_URL="https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-$OMPI_VERSION.tar.bz2"
-    mkdir -p /tmp/ompi
-    mkdir -p /opt
-    # Downloading Open MPI...
-    cd /tmp/ompi && wget -O openmpi-$OMPI_VERSION.tar.bz2 $OMPI_URL && tar -xjf openmpi-$OMPI_VERSION.tar.bz2
-    # Compiling and installing Open MPI...
-    cd /tmp/ompi/openmpi-$OMPI_VERSION && ./configure --prefix=$OMPI_DIR && make -j 10 && make install
 
 
 %runscript
