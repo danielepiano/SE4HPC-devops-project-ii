@@ -16,6 +16,9 @@ jobs:
         with:
           submodules: recursive
 
+      - name: test
+        run: exit 1
+
       - name: Setup | MPI
         id: mpi-setup
         uses: mpi4py/setup-mpi@v1
