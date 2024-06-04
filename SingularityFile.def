@@ -15,44 +15,43 @@ From: ubuntu:latest
     export MANPATH=$OMPI_DIR/share/man:$MANPATH
 
 
+%files
+    # Copy executable and matrix samples to run the executable with
+    ./build/main /apps/mx-multiplication
+    ./matrixA.txt /apps/mx-multiplication
+    ./matrixB.txt /apps/mx-multiplication
+
+
 %post
-    echo "Installing required packages..."
+    # Installing required packages...
     apt-get update && apt-get install -y wget bzip2 git bash gcc gfortran g++ make file
 
-    echo "Installing Open MPI"
     export OMPI_DIR=/opt/ompi
     export OMPI_VERSION=4.0.1
     export OMPI_URL="https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-$OMPI_VERSION.tar.bz2"
     mkdir -p /tmp/ompi
     mkdir -p /opt
-    # Download
+    # Downloading Open MPI...
     cd /tmp/ompi && wget -O openmpi-$OMPI_VERSION.tar.bz2 $OMPI_URL && tar -xjf openmpi-$OMPI_VERSION.tar.bz2
-    # Compile and install
+    # Compiling and installing Open MPI...
     cd /tmp/ompi/openmpi-$OMPI_VERSION && ./configure --enable-mpi-cxx --prefix=$OMPI_DIR && make -j 10 && make install
 
 
-%files
-    # Copy executable and matrix samples to run the executable with
-    ./build/main ./
-    ./matrixA.txt
-    ./matrixB.txt
-
-
 %runscript
-    cd /
-    mpirun -np 2 /main
+    cd /apps/mx-multiplication
+    mpirun -np 2 ./main
 
 
 %test
     # Check if required files exist
     echo ">> Verifying required files exist..."
-    if [[ ! -x ./main ]]; then
+    if [[ ! -x /apps/mx-multiplication ]]; then
         echo ">> !! Missing: main"
     fi
-    if [[ ! -f ./matrixA.txt ]]; then
+    if [[ ! -f /apps/mx-multiplication ]]; then
         echo ">> !! Missing: matrixA.txt"
     fi
-    if [[ ! -f ./matrixB.txt ]]; then
+    if [[ ! -f /apps/mx-multiplication ]]; then
         echo ">> !! Missing: matrixB.txt"
     fi
     echo ">> Check completed."
