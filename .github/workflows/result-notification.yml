@@ -24,14 +24,23 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Notification | Telegram by se4hpc_ci_bot
+      - name: Notification | Success via Telegram se4hpc_ci_bot
+        if: ${{ github.event.client_payload.passed }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_SE4HPC_CI_BOT_TOKEN }}
+          message: |
+            The job has completed its execution on cluster!!! :DDD
+            Here are some logs...
+
+            ${{ github.event.client_payload.log }}
+      - name: Notification | Failure via Telegram se4hpc_ci_bot
         if: ${{ !github.event.client_payload.passed }}
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_SE4HPC_CI_BOT_TOKEN }}
           message: |
-            github.event.client_payload.passed
-            The job has failed its execution on cluster. Here are some logs.
-            
-            ${{ github.event.client_payload.log }}
+            The job has failed its execution on cluster :(((
+            Go check the problem on ${{ github.event.client_payload.filename }}
