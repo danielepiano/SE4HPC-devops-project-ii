@@ -39,7 +39,6 @@ From: ubuntu:latest
 
 
 %runscript
-    echo ">> Container started..."
     cd /
     mpirun -np 2 /main
 
