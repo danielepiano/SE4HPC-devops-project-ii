@@ -44,13 +44,13 @@ From: ubuntu:latest
 %test
     # Check if required files exist
     echo ">> Verifying required files exist..."
-    if [[ ! -x /apps/mx-multiplication/main ]]; then
+    if [ ! -x /apps/mx-multiplication/main ]; then
         echo ">> !! Missing: main"
     fi
-    if [[ ! -f /apps/mx-multiplication/matrixA.txt ]]; then
+    if [ ! -f /apps/mx-multiplication/matrixA.txt ]; then
         echo ">> !! Missing: matrixA.txt"
     fi
-    if [[ ! -f /apps/mx-multiplication/matrixB.txt ]]; then
+    if [ ! -f /apps/mx-multiplication/matrixB.txt ]; then
         echo ">> !! Missing: matrixB.txt"
     fi
     echo ">> Check completed."
