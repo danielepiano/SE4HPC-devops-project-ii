@@ -127,8 +127,6 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      - name: test
-        run: exit 1
       # Tool to avoid interactive password input on following ssh connection requests
       - name: Setup | SSHPass
         id: sshpass-setup
@@ -178,6 +176,7 @@ jobs:
             Hey... ${{ github.repository }} CI pipeline failed :(((
             @${{ github.actor }} committed: '${{ github.event.head_commit.message }}'
             See changes at https://github.com/${{ github.repository }}/commit/${{github.sha}}
+
       # Notify a success if each of the previous jobs has been successful
       - name: Notification | Success via Telegram se4hpc_ci_bot
         if: ${{ !contains(needs.*.result, 'failure') }}
