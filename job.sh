@@ -13,10 +13,6 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=100M
 
-#module load singularity
-
-export PATH=/usr/mpi/gcc/openmpi-4.0.4rc3/bin/:$PATH
-
 export MAIL_TO=dpiano01@gmail.com
 
 export WEBHOOK_URL=https://api.github.com/repos/danielepiano/SE4HPC-devops-project-ii/dispatches
