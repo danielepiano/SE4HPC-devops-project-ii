@@ -1,0 +1,37 @@
+name: Matrix-Multiplication Webhook Acceptor
+
+on:
+  # https://api.github.com/repos/{user}/{repo}/dispatches
+  # {
+  #  "event_type": <type>,
+  #  "client_payload": {
+  #    ...
+  #  }
+  # }
+  repository_dispatch:
+    types:
+      - result-notification
+  # https://api.github.com/repos/danielepiano/SE4HPC-devops-project-ii/dispatches
+  # {
+  #  "event_type": result-notification,
+  #  "client_payload": {
+  #    passed: boolean,
+  #    log: string
+  #  }
+  # }
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notification | Telegram by se4hpc_ci_bot
+        if: ${{ !github.event.client_payload.passed }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_SE4HPC_CI_BOT_TOKEN }}
+          message: |
+            github.event.client_payload.passed
+            The job has failed its execution on cluster. Here are some logs.
+            
+            ${{ github.event.client_payload.log }}
