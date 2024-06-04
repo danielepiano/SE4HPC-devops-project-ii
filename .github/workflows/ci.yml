@@ -121,6 +121,7 @@ jobs:
 
 
   deploy:
+    # To be executed after build-and-test stage
     needs:
       - build-and-test
     runs-on: ubuntu-latest
@@ -129,10 +130,12 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
+      # Tool to avoid interactive password input on following ssh connection requests
       - name: Setup | SSHPass
         id: sshpass-setup
         run: sudo apt-get install sshpass
 
+      # Deploy of the Singularity image on the remote cluster
       - name: Setup | Download Singularity image
         id: singularity-image-download
         uses: actions/download-artifact@v4
@@ -143,11 +146,13 @@ jobs:
         run: |
           sshpass -p '${{ secrets.CINECA_SECRET }}' scp -o PreferredAuthentications=password -o StrictHostKeyChecking=no mx-multiplication.sif a08trb53@login.g100.cineca.it:~
 
+      # Deploy of the job script (Slurm sbatch) on the remote cluster
       - name: Deploy | Slurm job descriptor
         id: sbatch-job-deploy
         run: |
           ssh-keygen -R "login.g100.cineca.it"
           sshpass -p '${{ secrets.CINECA_SECRET }}' scp -o PreferredAuthentications=password -o StrictHostKeyChecking=no job.sh a08trb53@login.g100.cineca.it:~
+      # Prompt remote cluster for job scheduling
       - name: Deploy | Enqueue job via Slurm
         id: sbatch-job
         run: |
@@ -157,11 +162,13 @@ jobs:
 
   notify:
     runs-on: ubuntu-latest
+    # To be executed anyway
+    if: ${{ always() }}
     needs:
       - build-and-test
       - deploy
-    if: ${{ always() }}
     steps:
+      # Notify a failure if any of the previous jobs has failed
       - name: Notification | Failure via Telegram se4hpc_ci_bot
         if: ${{ contains(needs.*.result, 'failure') }}
         uses: appleboy/telegram-action@master
@@ -172,6 +179,7 @@ jobs:
             Hey... ${{ github.repository }} CI pipeline failed :(((
             @${{ github.actor }} committed: '${{ github.event.head_commit.message }}'
             See changes at https://github.com/${{ github.repository }}/commit/${{github.sha}}
+      # Notify a success if each of the previous jobs has been successful
       - name: Notification | Success via Telegram se4hpc_ci_bot
         if: ${{ contains(join(needs.*.result, ','), 'success') }}
         uses: appleboy/telegram-action@master
