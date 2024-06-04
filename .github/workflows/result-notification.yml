@@ -1,6 +1,10 @@
 name: Matrix-Multiplication Webhook Acceptor
 
 on:
+  # When a webhook is received at the URL on the bottom
+  # and the event type matches,
+  # a workflow may be triggered to run some actions.
+  #
   # https://api.github.com/repos/{user}/{repo}/dispatches
   # {
   #  "event_type": <type>,
@@ -11,12 +15,17 @@ on:
   repository_dispatch:
     types:
       - result-notification
+  # When a 'result-notification' webhook is received at the URL on the bottom,
+  # meaning that the remote computation is either failed or completed successfully,
+  # the Telegram BOT notifies about the outcome of the computation on the cluster.
+  #
   # https://api.github.com/repos/danielepiano/SE4HPC-devops-project-ii/dispatches
   # {
   #  "event_type": result-notification,
   #  "client_payload": {
-  #    passed: boolean,
-  #    log: string
+  #    "passed": boolean,
+  #    "log": "string",
+  #    "filename": "string"
   #  }
   # }
 
@@ -37,7 +46,7 @@ jobs:
             ${{ github.event.client_payload.log }}
 
 
-            You can check this outcome on ${{ github.event.client_payload.filename }}.
+            You can check this outcome on ${{ github.event.client_payload.filename }}
 
       - name: Notification | Failure via Telegram se4hpc_ci_bot
         if: ${{ !github.event.client_payload.passed }}
