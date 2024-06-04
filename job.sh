@@ -13,8 +13,6 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=100M
 
-export MAIL_TO=dpiano01@gmail.com
-
 export WEBHOOK_URL=https://api.github.com/repos/danielepiano/SE4HPC-devops-project-ii/dispatches
 GITHUB_TOKEN=$(cat ~/.github_token)
 export GITHUB_TOKEN=$GITHUB_TOKEN
