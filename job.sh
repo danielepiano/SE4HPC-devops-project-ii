@@ -32,7 +32,7 @@ echo "$(date -d @${start} "+%Y-%m-%d %H:%M:%S"): ${SLURM_JOB_NAME} start id=${SL
 # Send email about begin, success, failure via e-mail (Slurm feature)
 # Send webhook to enable GitHub Action workflow to send result/failure notification via Telegram
 
-if ( srun singularity run --bind /g100_scratch/usertrain/a08trb53:/scratch_local mx-multiplication.sif ); \
+if ( singularity run --bind /g100_scratch/usertrain/a08trb53:/scratch_local mx-multiplication.sif ); \
   then ( \
     echo "$SLURM_JOB_NAME Ended after $(secs_to_human $(($(date +%s) - ${start}))) id=$SLURM_JOB_ID" \
     && JSON_CONTENT=$(head -n 4 output.txt | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g') \
@@ -45,7 +45,7 @@ if ( srun singularity run --bind /g100_scratch/usertrain/a08trb53:/scratch_local
       -d "{\"event_type\": \"result-notification\", \"client_payload\": {\"passed\": true, \"log\": \"$JSON_CONTENT...\", \"filename\": \"output.txt\"}}"
   ); \
   else ( \
-    JSON_CONTENT=$(head -n 10 error.txt | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g') \
+    JSON_CONTENT=$(head -n 4 error.txt | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g') \
     && curl -L \
       -X POST \
       -H "Accept: application/vnd.github+json" \
