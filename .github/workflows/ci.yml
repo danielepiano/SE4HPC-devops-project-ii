@@ -116,6 +116,7 @@ jobs:
           if-no-files-found: error
           retention-days: 10
 
+
   deploy:
     needs:
       - build-and-test
@@ -150,8 +151,16 @@ jobs:
           ssh-keygen -R "login.g100.cineca.it"
           sshpass -p '${{ secrets.CINECA_SECRET }}' ssh -o PreferredAuthentications=password -o StrictHostKeyChecking=no a08trb53@login.g100.cineca.it 'sbatch job.sh'
 
+
+  notify:
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-test
+      - deploy
+    if: ${{ always() }}
+    steps:
       - name: Notification | Failure via Telegram se4hpc_ci_bot
-        if: ${{ !success() }}
+        if: ${{ failure() }}
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
@@ -160,7 +169,6 @@ jobs:
             Hey... ${{ github.repository }} CI pipeline failed :(((
             @${{ github.actor }} committed: '${{ github.event.head_commit.message }}'
             See changes at https://github.com/${{ github.repository }}/commit/${{github.sha}}
-
       - name: Notification | Success via Telegram se4hpc_ci_bot
         if: ${{ success() }}
         uses: appleboy/telegram-action@master
