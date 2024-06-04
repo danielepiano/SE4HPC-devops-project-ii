@@ -161,7 +161,7 @@ jobs:
           ssh-keygen -R "login.g100.cineca.it"
           sshpass -p '${{ secrets.CINECA_SECRET }}' ssh -o PreferredAuthentications=password -o StrictHostKeyChecking=no a08trb53@login.g100.cineca.it 'sbatch job.sh'
 
-      - name: Failure notification | Telegram by se4hpc_ci_bot
+      - name: Notification | Failure via Telegram se4hpc_ci_bot
         if: ${{ !success() }}
         uses: appleboy/telegram-action@master
         with:
@@ -172,7 +172,7 @@ jobs:
             @${{ github.actor }} committed: '${{ github.event.head_commit.message }}'
             See changes at https://github.com/${{ github.repository }}/commit/${{github.sha}}
 
-      - name: Success notification | Telegram by se4hpc_ci_bot
+      - name: Notification | Success via Telegram se4hpc_ci_bot
         if: ${{ success() }}
         uses: appleboy/telegram-action@master
         with:
