@@ -22,6 +22,7 @@ jobs:
         with:
           mpi: 'openmpi'
 
+      # Program compilation
       - name: Setup | CMake
         id: cmake-setup
         uses: jwlawson/actions-setup-cmake@v2
@@ -31,45 +32,32 @@ jobs:
       - name: Build | Executables
         id: cmake-build
         run: cmake --build build
-      - name: Build | Upload executable
-        id: build-upload
+
+      # Unit tests
+      - name: Test | Run Unit-Tests
+        id: unit-tests
+        run: ctest --test-dir build --output-on-failure --output-log test-report.txt
+
+      # Static code analysis, report upload as artifact
+      - name: Setup | Cppcheck
+        id: cppcheck-setup
+        run: sudo apt-get install cppcheck
+      - name: Setup | Verify Cppcheck
+        id: cppcheck-verify
+        run: cppcheck --version
+      - name: SCA | Cppcheck
+        id: sca-cppcheck
+        run: cppcheck --enable=all --inconclusive --std=c++17 src --output-file=sca-report.txt
+      - name: SCA | Upload Cppcheck report
+        id: sca-cppcheck-upload
         uses: actions/upload-artifact@v4
         with:
-          name: main
-          path: build/main
+          name: sca-report
+          path: sca-report.txt
           if-no-files-found: error
           retention-days: 10
 
-      #      - name: Test | Run Unit-Tests
-      #        id: unit-tests
-      #        run: ctest --test-dir build --output-on-failure --output-log test-report.txt
-      #      - name: Test | Upload test report
-      #        id: unit-tests-report-upload
-      #        uses: actions/upload-artifact@v4
-      #        with:
-      #          name: test-report.txt
-      #          path: test-report.txt
-      #          if-no-files-found: error
-      #          retention-days: 10
-      #
-      #      - name: Setup | Cppcheck
-      #        id: cppcheck-setup
-      #        run: sudo apt-get install cppcheck
-      #      - name: Setup | Verify Cppcheck
-      #        id: cppcheck-verify
-      #        run: cppcheck --version
-      #      - name: SCA | Cppcheck
-      #        id: sca-cppcheck
-      #        run: cppcheck --enable=all --inconclusive --std=c++17 src --output-file=sca-report.txt
-      #      - name: SCA | Upload Cppcheck report
-      #        id: sca-cppcheck-upload
-      #        uses: actions/upload-artifact@v4
-      #        with:
-      #          name: sca-report
-      #          path: sca-report.txt
-      #          if-no-files-found: error
-      #          retention-days: 10
-
+      # Setup Singularity dependencies, Go for compiling, Singularity
       - name: Setup | Singularity dependencies
         id: singularity-dep-setup
         run: |
@@ -115,6 +103,7 @@ jobs:
         id: singularity-verify
         run: singularity --version
 
+      # Build a Singularity container out of the Definition File in the repository, upload as artifact
       - name: Build | Singularity image
         id: singularity-build
         run: sudo -E singularity build mx-multiplication.sif SingularityFile.def
