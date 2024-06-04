@@ -35,6 +35,10 @@ jobs:
             Here are some logs...
 
             ${{ github.event.client_payload.log }}
+
+
+            You can check this outcome on ${{ github.event.client_payload.filename }}.
+
       - name: Notification | Failure via Telegram se4hpc_ci_bot
         if: ${{ !github.event.client_payload.passed }}
         uses: appleboy/telegram-action@master
@@ -43,4 +47,9 @@ jobs:
           token: ${{ secrets.TELEGRAM_SE4HPC_CI_BOT_TOKEN }}
           message: |
             The job has failed its execution on cluster :(((
-            Go check the problem on ${{ github.event.client_payload.filename }}
+            Here are some logs...
+            
+            ${{ github.event.client_payload.log }}
+
+
+            See more details on file ${{ github.event.client_payload.filename }}
