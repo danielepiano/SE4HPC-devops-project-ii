@@ -17,9 +17,9 @@ From: ubuntu:latest
 
 %files
     # Copy executable and matrix samples to run the executable with
-    ./build/main /apps/
-    ./matrixA.txt /apps/
-    ./matrixB.txt /apps/
+    ./build/main /apps/mx-multiplication/
+    ./matrixA.txt /apps/mx-multiplication/
+    ./matrixB.txt /apps/mx-multiplication/
 
 
 %post
@@ -39,19 +39,19 @@ From: ubuntu:latest
 
 %runscript
     cd /apps/mx-multiplication
-    mpirun -np 2 ./main
+    mpirun -n 2 --wdir /apps/mx-multiplication main
 
 
 %test
     # Check if required files exist
     echo ">> Verifying required files exist..."
-    if [[ ! -x /apps/mx-multiplication ]]; then
+    if [[ ! -x /apps/mx-multiplication/main ]]; then
         echo ">> !! Missing: main"
     fi
-    if [[ ! -f /apps/mx-multiplication ]]; then
+    if [[ ! -f /apps/mx-multiplication/matrixA.txt ]]; then
         echo ">> !! Missing: matrixA.txt"
     fi
-    if [[ ! -f /apps/mx-multiplication ]]; then
+    if [[ ! -f /apps/mx-multiplication/matrixB.txt ]]; then
         echo ">> !! Missing: matrixB.txt"
     fi
     echo ">> Check completed."
