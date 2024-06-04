@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: mfisherman/openmpi
+From: mfisherman/openmpi:4.0.2
 
 %labels
     Author danielepiano
