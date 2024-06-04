@@ -163,7 +163,7 @@ jobs:
     if: ${{ always() }}
     steps:
       - name: Notification | Failure via Telegram se4hpc_ci_bot
-        if: ${{ failure() }}
+        if: ${{ contains(needs.*.result, 'failure') }}
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
