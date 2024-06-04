@@ -27,14 +27,14 @@ secs_to_human(){
     echo "$(( ${1} / 3600 )):$(( (${1} / 60) % 60 )):$(( ${1} % 60 ))"
 }
 start=$(date +%s)
-echo "$(date -d @${start} "+%Y-%m-%d %H:%M:%S"): ${SLURM_JOB_NAME} start id=${SLURM_JOB_ID}"
+echo "$(date -d @${start} "+%Y-%m-%d %H:%M:%S") [id:${SLURM_JOB_ID}] - ${SLURM_JOB_NAME} start"
 
 # Send email about begin, success, failure via e-mail (Slurm feature)
 # Send webhook to enable GitHub Action workflow to send result/failure notification via Telegram
 
 if ( singularity run --bind /g100_scratch/usertrain/a08trb53:/scratch_local mx-multiplication.sif ); \
   then ( \
-    echo "$SLURM_JOB_NAME Ended after $(secs_to_human $(($(date +%s) - ${start}))) id=$SLURM_JOB_ID" \
+    echo "$(date -d @${start} "+%Y-%m-%d %H:%M:%S") [id:${SLURM_JOB_ID}] - $SLURM_JOB_NAME Ended after $(secs_to_human $(($(date +%s) - ${start})))" \
     && JSON_CONTENT=$(head -n 4 output.txt | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g') \
     && curl -L \
       -X POST \
