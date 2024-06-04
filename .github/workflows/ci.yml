@@ -173,7 +173,7 @@ jobs:
             @${{ github.actor }} committed: '${{ github.event.head_commit.message }}'
             See changes at https://github.com/${{ github.repository }}/commit/${{github.sha}}
       - name: Notification | Success via Telegram se4hpc_ci_bot
-        if: ${{ !failure() }}
+        if: ${{ contains(join(needs.*.result, ','), 'success') }}
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
