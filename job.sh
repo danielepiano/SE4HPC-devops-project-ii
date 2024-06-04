@@ -35,7 +35,7 @@ echo "$(date -d @${start} "+%Y-%m-%d %H:%M:%S") [id:${SLURM_JOB_ID}] - ${SLURM_J
 if ( singularity run --bind /g100_scratch/usertrain/a08trb53:/scratch_local mx-multiplication.sif ); \
   then ( \
     echo "$(date -d @${start} "+%Y-%m-%d %H:%M:%S") [id:${SLURM_JOB_ID}] - $SLURM_JOB_NAME Ended after $(secs_to_human $(($(date +%s) - ${start})))" \
-    && JSON_CONTENT=$(head -n 4 output.txt | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g') \
+    && JSON_CONTENT=$(sed 's/"/\\"/g' output.txt | sed ':a;N;$!ba;s/\n/\\n/g') \
     && curl -L \
       -X POST \
       -H "Accept: application/vnd.github+json" \
