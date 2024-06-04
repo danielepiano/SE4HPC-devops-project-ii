@@ -8,9 +8,9 @@
 #SBATCH --mail-user=dpiano01@gmail.com
 
 #SBATCH --time=00:10
-#SBATCH --nodes=1
+#SBATCH --nodes=2
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=3
 #SBATCH --mem-per-cpu=100M
 
 #module load singularity
