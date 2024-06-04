@@ -38,7 +38,6 @@ From: ubuntu:latest
 
 
 %runscript
-    cd /apps/mx-multiplication
     mpirun -n 2 --wdir /apps/mx-multiplication main
 
 
