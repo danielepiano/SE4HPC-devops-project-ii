@@ -28,7 +28,7 @@ From: ubuntu:latest
     # Download
     cd /tmp/ompi && wget -O openmpi-$OMPI_VERSION.tar.bz2 $OMPI_URL && tar -xjf openmpi-$OMPI_VERSION.tar.bz2
     # Compile and install
-    cd /tmp/ompi/openmpi-$OMPI_VERSION && ./configure --enable-mpi-cxx --prefix=$OMPI_DIR && make install
+    cd /tmp/ompi/openmpi-$OMPI_VERSION && ./configure --enable-mpi-cxx --prefix=$OMPI_DIR && make -j 10 && make install
 
 
 %files
