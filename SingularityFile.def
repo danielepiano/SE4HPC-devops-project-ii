@@ -17,9 +17,9 @@ From: ubuntu:latest
 
 %files
     # Copy executable and matrix samples to run the executable with
-    ./build/main /apps/mx-multiplication
-    ./matrixA.txt /apps/mx-multiplication
-    ./matrixB.txt /apps/mx-multiplication
+    ./build/main /apps/
+    ./matrixA.txt /apps/
+    ./matrixB.txt /apps/
 
 
 %post
