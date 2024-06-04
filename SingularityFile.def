@@ -34,7 +34,7 @@ From: ubuntu:latest
     # Downloading Open MPI...
     cd /tmp/ompi && wget -O openmpi-$OMPI_VERSION.tar.bz2 $OMPI_URL && tar -xjf openmpi-$OMPI_VERSION.tar.bz2
     # Compiling and installing Open MPI...
-    cd /tmp/ompi/openmpi-$OMPI_VERSION && ./configure --enable-mpi-cxx --prefix=$OMPI_DIR && make -j 10 && make install
+    cd /tmp/ompi/openmpi-$OMPI_VERSION && ./configure --prefix=$OMPI_DIR && make -j 10 && make install
 
 
 %runscript
