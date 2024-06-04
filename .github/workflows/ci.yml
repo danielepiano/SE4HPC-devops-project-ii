@@ -180,7 +180,7 @@ jobs:
             See changes at https://github.com/${{ github.repository }}/commit/${{github.sha}}
       # Notify a success if each of the previous jobs has been successful
       - name: Notification | Success via Telegram se4hpc_ci_bot
-        if: ${{ contains(join(needs.*.result, ','), 'success') }}
+        if: ${{ !contains(join(needs.*.result, ','), 'failure') }}
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
