@@ -105,10 +105,10 @@ jobs:
         run: singularity --version
 
       # Build a Singularity container out of the Definition File in the repository, upload as artifact
-      - name: Build | Singularity image
+      - name: Package | Singularity image
         id: singularity-build
         run: sudo -E singularity build mx-multiplication.sif SingularityFile.def
-      - name: Build | Upload Singularity image
+      - name: Package | Upload Singularity image
         id: singularity-image-upload
         uses: actions/upload-artifact@v4
         with:
@@ -128,7 +128,7 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      # Tool to avoid interactive password input on following ssh connection requests
+      # Tool to avoid interactive password input on following SSH connection requests
       - name: Setup | SSHPass
         id: sshpass-setup
         run: sudo apt-get install sshpass
@@ -151,7 +151,7 @@ jobs:
           ssh-keygen -R "login.g100.cineca.it"
           sshpass -p '${{ secrets.CINECA_SECRET }}' scp -o PreferredAuthentications=password -o StrictHostKeyChecking=no job.sh a08trb53@login.g100.cineca.it:~
       # Prompt remote cluster for job scheduling
-      - name: Deploy | Enqueue job via Slurm
+      - name: Scheduling | Enqueue job via Slurm
         id: sbatch-job
         run: |
           ssh-keygen -R "login.g100.cineca.it"
